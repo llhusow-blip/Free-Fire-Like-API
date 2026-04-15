@@ -113,7 +113,8 @@ def enc(uid):
     return encrypted_uid
 
 def make_request(encrypt, server_name, token):
-    try:server_name = "ME"
+    try:
+           server_name = "ME"
         if server_name == "IND":
             url = "https://client.ind.freefiremobile.com/GetPlayerPersonalShow"
         elif server_name in {"BR", "US", "SAC", "NA"}:
@@ -181,8 +182,9 @@ def handle_requests():
         # Extract server_name (lock_region) from token if not provided
         server_name = request.args.get("server_name", "").upper()
         if not server_name:
-            try:if not server_name:
-    server_name = "ME"
+                   server_name = "ME"
+
+  
                 payload = token.split('.')[1]
                 payload += '=' * (-len(payload) % 4)
                 decoded_payload = base64.urlsafe_b64decode(payload).decode('utf-8')
@@ -201,7 +203,7 @@ def handle_requests():
         # Get before likes count
         before = make_request(encrypted_uid, server_name, token)
         if before is None:
-            return jsonify({"error": "Failed to retrieve player info. There are no valid token found! please update tokens.json with valid tokens"}), 500
+       return jsonify({"error": "Failed to retrieve player info. There are no valid token found! please update tokens.json with valid tokens"}), 500
         
         data_before = json.loads(MessageToJson(before))
         before_like = int(data_before.get('AccountInfo', {}).get('Likes', 0) or 0)
