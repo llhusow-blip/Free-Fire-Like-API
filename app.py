@@ -113,7 +113,7 @@ def enc(uid):
     return encrypted_uid
 
 def make_request(encrypt, server_name, token):
-    try:
+    try:server_name = "ME"
         if server_name == "IND":
             url = "https://client.ind.freefiremobile.com/GetPlayerPersonalShow"
         elif server_name in {"BR", "US", "SAC", "NA"}:
@@ -181,7 +181,8 @@ def handle_requests():
         # Extract server_name (lock_region) from token if not provided
         server_name = request.args.get("server_name", "").upper()
         if not server_name:
-            try:
+            try:if not server_name:
+    server_name = "ME"
                 payload = token.split('.')[1]
                 payload += '=' * (-len(payload) % 4)
                 decoded_payload = base64.urlsafe_b64decode(payload).decode('utf-8')
